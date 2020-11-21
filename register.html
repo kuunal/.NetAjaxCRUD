@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="container">
+        <form id="login-form" method="POST">
+            <h1>Register</h1>
+            <div id="div-container">
+                <input type="email" name="email" id="email-id" autocomplete="off" placeholder=" " required>
+                <label for="email"><span id="email">Email:<span></label>
+            </div>
+            <div id="div-container">
+                <input type="password" name="password" id="pass" placeholder=" " required>
+                <label for="password"><span id="email">Password:<span></label>
+            </div>
+            <div id="div-container">
+                <input type="password" name="password" id="pass" placeholder=" " required>
+                <label for="password"><span id="email">Confirm Password:<span></label>
+            </div>
+            <button type="submit" onclick="authenticate()">Login</button>
+            <p>Already registered? <a href="#"> Sign In</a></p>
+        </form>
+    </div>
+</body>
+</html>
