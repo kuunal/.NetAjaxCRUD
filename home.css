@@ -17,7 +17,7 @@ body {
   align-items: center;
 }
 
-.container__header button {
+button {
   height: 100%;
   border-radius: 50%;
   border: none;
@@ -31,15 +31,24 @@ body {
 
 .columns ul {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .columns li {
-  flex: 1;
   list-style-type: none;
 }
 
-.columns li:last-child {
-  flex: 2;
+.columns li:first-child {
+  margin-left: -3%;
+}
+
+.data__list {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.data__list tr td {
+  width: 250px;
+  text-align: center;
 }
