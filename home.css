@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 60%;
+  margin: 5% auto;
+  border: 1px solid black;
+  padding: 2%;
+}
+
+.columns {
+  width: 100%;
+}
+
+.columns ul {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.columns li {
+  flex: 1;
+  list-style-type: none;
+}
+
+.columns li:last-child {
+  flex: 2;
+}
