@@ -8,6 +8,41 @@ body {
   background-size: cover;
 }
 
+.nav {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(100px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav .nav__left {
+  display: flex;
+  width: 30%;
+}
+
+.nav .nav__right {
+  display: none;
+}
+
+.nav .nav__right-active {
+  display: inline-flex;
+  justify-content: flex-end;
+  width: 30%;
+}
+
+.nav a {
+  color: dodgerblue;
+  text-decoration: none;
+  padding: 4%;
+  font-size: 2vw;
+}
+
+h1 {
+  display: inline;
+}
+
 .container {
   width: 60%;
   margin: 0 auto;
