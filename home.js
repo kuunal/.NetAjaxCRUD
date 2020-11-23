@@ -35,13 +35,13 @@ $(document).ready(function()
         $(".nav").css("pointer-events","auto"); 
     })
 
-    $(document).on("click",".delete-btn",function(e){
-        e.preventDefault()
+    $(document).on("click",".delete-btn",function(){
+        let currentBtn = $(this);
         $.ajax({
-            url:"http://localhost:3000/employee/"+$(this).val(),
+            url:"http://localhost:3000/employee/"+currentBtn.val(),
             method:"DELETE",
             success:function(){
-                $(this).empty();
+                $(currentBtn).parent().parent().remove();
             },
             error:function(err){
                 alert("Something went wrong! Please try again later")
