@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Greeting.DTOs.EmployeeDTO;
 using Greeting.Models;
 using Greeting.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace Greeting.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddEmployee(Employee employee)
+        public IActionResult AddEmployee(EmployeesDTO employee)
         {
             
             return Ok(_empService.AddEmployee(employee));
