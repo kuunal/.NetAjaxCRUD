@@ -13,5 +13,7 @@ namespace Greeting.Models
         public string Name { get; set; } = "f0rest";
         public string Password { get; set; } = "f0rest@123";
 
+        public string address { get; set; }
+        public long PhoneNumber { get; set; }
     }
 }
