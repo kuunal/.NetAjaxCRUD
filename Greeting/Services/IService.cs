@@ -10,6 +10,9 @@ namespace Greeting.Services
         ServiceResponse<List<EmployeesDTO>> GetEmployees();
         ServiceResponse<EmployeesDTO> GetEmployee(int id);
         ServiceResponse<EmployeesDTO> AddEmployee(EmployeesDTO employee);
+        ServiceResponse<EmployeesDTO> RemoveEmployee(int id);
+        //ServiceResponse<EmployeesDTO> UpdateEmployee(EmployeesDTO employee);
+
 
     }
 }
