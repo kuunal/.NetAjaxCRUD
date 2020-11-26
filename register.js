@@ -10,14 +10,14 @@ function authenticate(e){
     if(password !=$('#confirm-pass').val())
         alert("passwords don't match");
     $.ajax({
-        url:"http://localhost:3000/employee",
+        url:"http://localhost:5000/employee",
         method:"POST",
         data:{
             name:name,
             email:email,
             password:password
         },success: function(){
-            console.log("Registered succrssfully")
+            window.location="/home.html";
         },error: function(err){
             console.log(err);
         }

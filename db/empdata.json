@@ -1,0 +1,60 @@
+{
+  "employee": [
+    {
+      "id": 2,
+      "name": "Get_Right",
+      "email": "Get_Right@sk.com",
+      "password": "asdf",
+      "address": "Sweden",
+      "Pno": 1234567890
+    },
+    {
+      "id": 3,
+      "name": "ColdZera",
+      "email": "Cold@faze.com",
+      "password": "asdf",
+      "address": "Sweden",
+      "Pno": 1234567890
+    },
+    {
+      "id": 4,
+      "name": "Miracle",
+      "email": "Miralce@nigma.com",
+      "password": "asdf",
+      "address": "Sweden",
+      "Pno": 1234567890
+    },
+    {
+      "id": 5,
+      "name": "DSN",
+      "email": "DSN@sk.com",
+      "password": "asdf",
+      "address": "Sweden",
+      "Pno": 1234567890
+    },
+    {
+      "id": 6,
+      "name": "fnx",
+      "email": "FNX@sk.com",
+      "password": "asdf",
+      "address": "Sweden",
+      "Pno": 1234567890
+    },
+    {
+      "id": 7,
+      "name": "fallen~~",
+      "email": "fallen@MIBR.com",
+      "password": "asdf",
+      "address": "Sweden",
+      "Pno": 1234567890
+    },
+    {
+      "id": 9,
+      "name": "zzz",
+      "email": "zzz@gmail.com",
+      "password": "Zzz@123456",
+      "address": "Sweden",
+      "Pno": 1234567890
+    }
+  ]
+}
