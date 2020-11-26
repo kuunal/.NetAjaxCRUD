@@ -23,7 +23,7 @@ namespace Greeting.Repositories
             Console.WriteLine(_connectionString);
         }
 
-        public void Add(Employee employeeData)
+        public async Task Add(Employee employeeData)
         {
             SqlCommand command = new SqlCommand("insert into EmployeeTable(name, password, address, email, phoneno) values(@name, @password, @address, @email, @phoneno)");
             command.Parameters.AddWithValue("@name", employeeData.Name);
@@ -31,21 +31,21 @@ namespace Greeting.Repositories
             command.Parameters.AddWithValue("@address", employeeData.Address);
             command.Parameters.AddWithValue("@email", employeeData.Email);
             command.Parameters.AddWithValue("@phoneno", employeeData.PhoneNumber);
-            _conn.Open();
+            await _conn.OpenAsync();
             command.Connection = _conn;
             command.ExecuteNonQuery();
             _conn.Close();
         }
 
-        public List<Employee> Get()
+        public async Task<List<Employee>> GetAsync()
         {
             List<Employee> employees = new List<Employee>();
             using (_conn) {
-                _conn.Open();
+                await _conn.OpenAsync();
                 SqlCommand command = new SqlCommand("Select id, name, address, email, password, phoneno from EmployeeTable", _conn);
                 using(SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         employees.Add(new Employee { Id = Convert.ToInt32(reader["id"]), 
                             Name = reader.GetString(1),
@@ -61,17 +61,17 @@ namespace Greeting.Repositories
             return employees;
         }
 
-        public Employee Get(int id)
+        public async Task<Employee> GetAsync(int id)
         {
             Employee employee = null;
             using (_conn)
             {
-                _conn.Open();
+                await _conn.OpenAsync();
                 SqlCommand command = new SqlCommand("Select id, name, address, email, password, phoneno from EmployeeTable where id = @id", _conn);
                 command.Parameters.AddWithValue("@id", id);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         employee = new Employee
                         {
@@ -89,16 +89,16 @@ namespace Greeting.Repositories
             return employee;
         }
 
-        public void Remove(int id)
+        public async Task Remove(int id)
         {
-            _conn.Open();
+            await _conn.OpenAsync();
             SqlCommand command = new SqlCommand("Delete from EmployeeTable where id = @id", _conn);
             command.Parameters.AddWithValue("@id", id);
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
             _conn.Close();
         }
 
-        public Employee Update(int id)
+        public Task<Employee> Update(int id)
         {
             throw new NotImplementedException();
         }
