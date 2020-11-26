@@ -9,11 +9,11 @@ namespace Greeting.Repositories
 {
     public interface IRepository<T>
     {
-        List<T> Get();
-        T Get(int id);
-        void Add(T employeeData);
+        Task<List<T>> GetAsync();
+        Task<T> GetAsync(int id);
+        Task Add(T employeeData);
 
-        void Remove(int id);
-        T Update(int id);
+        Task Remove(int id);
+        Task<T> Update(int id);
     }
 }
