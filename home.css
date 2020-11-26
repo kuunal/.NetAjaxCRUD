@@ -105,6 +105,12 @@ button {
   text-align: center;
 }
 
+.data__list tr:nth-child(2) {
+  width: 100%;
+  /* width: 50%; */
+  text-align: center;
+}
+
 .modal {
   position: absolute;
   top: 20%;
