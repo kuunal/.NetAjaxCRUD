@@ -34,8 +34,13 @@ namespace Greeting.Controllers
         [HttpPost]
         public IActionResult AddEmployee(EmployeesDTO employee)
         {
-            
             return Ok(_empService.AddEmployee(employee));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            return Ok(_empService.RemoveEmployee(id));
         }
     }
 }
