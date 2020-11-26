@@ -26,6 +26,9 @@ namespace Greeting
             services.AddScoped<IService, EmployeeServices>();
             services.AddScoped<IRepository<Employee>, Repository>();
             services.AddAutoMapper(typeof(Startup));
+            services.AddCors(options=>options.AddDefaultPolicy(
+                builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowCredentials().AllowAnyMethod()
+                ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +43,7 @@ namespace Greeting
                 app.UseHsts();
             }
 
+            app.UseCors();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

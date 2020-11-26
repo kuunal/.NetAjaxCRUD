@@ -25,8 +25,7 @@ namespace Greeting.Repositories
 
         public void Add(Employee employeeData)
         {
-            SqlCommand command = new SqlCommand("insert into EmployeeTable(id, name, password, address, email, phoneno) values(@id, @name, @password, @address, @email, @phoneno)");
-            command.Parameters.AddWithValue("@id", employeeData.Id);
+            SqlCommand command = new SqlCommand("insert into EmployeeTable(name, password, address, email, phoneno) values(@name, @password, @address, @email, @phoneno)");
             command.Parameters.AddWithValue("@name", employeeData.Name);
             command.Parameters.AddWithValue("@password", employeeData.Password);
             command.Parameters.AddWithValue("@address", employeeData.Address);
