@@ -20,27 +20,29 @@ namespace Greeting.Controllers
             this._empService = empService;
         }
 
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
-            return Ok(_empService.GetEmployees());
+            return Ok(await _empService.GetEmployees());
         }
 
         [HttpGet("{id}")]
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> DetailAsync(int id)
         {
-            return Ok(_empService.GetEmployee(id));
+            return Ok(await _empService.GetEmployee(id));
         }
 
         [HttpPost]
-        public IActionResult AddEmployee(EmployeesDTO employee)
-        {
-            return Ok(_empService.AddEmployee(employee));
+        public async Task<IActionResult> AddEmployeeAsync([FromForm] EmployeesDTO employee)
+        {   
+            return Ok(await _empService.AddEmployee(employee));
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            return Ok(_empService.RemoveEmployee(id));
+            return Ok(await _empService.RemoveEmployee(id));
         }
+
+
     }
 }
