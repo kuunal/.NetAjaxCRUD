@@ -12,6 +12,7 @@ namespace Greeting.Models
         public AutoMapperProfile()
         {
             CreateMap<Employee, EmployeesDTO>();
+            CreateMap<EmployeesDTO, Employee>();
         }
     }
 }
