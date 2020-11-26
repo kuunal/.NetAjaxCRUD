@@ -4,20 +4,30 @@ function authenticate(e){
     let name = $('#username').val()
     let email = $('#email-id').val()
     let password = $('#pass') .val()
-    console.log(name, email, password)
-    if (!password.match("^(?=.*[0-9])(?=.*[A-Z])(?=[a-zA-Z0-9]*[^a-zA-Z0-9][a-zA-Z0-9]*$).{8,}"))
+    let address = $('#address') .val()
+    let phoneNumber = $('#pno') .val()
+    console.log(name, email, password, (phoneNumber), address)
+    if (!password.match("^(?=.*[0-9])(?=.*[A-Z])(?=[a-zA-Z0-9]*[^a-zA-Z0-9][a-zA-Z0-9]*$).{8,}")){
         alert("Invalid format")
-    if(password !=$('#confirm-pass').val())
+        return
+    }
+    if(password !=$('#confirm-pass').val()){
         alert("passwords don't match");
+        return
+    }
+    let employee = {
+        Name:name,
+        Email:email,
+        Password:password,
+        Address:address,
+        PhoneNumber:phoneNumber
+    }
     $.ajax({
-        url:"http://localhost:5000/employee",
         method:"POST",
-        data:{
-            name:name,
-            email:email,
-            password:password
-        },success: function(){
-            window.location="/home.html";
+        url:"http://localhost:5000/Employee",
+        data:employee,
+        success: function(){
+            window.location="/login.html";
         },error: function(err){
             console.log(err);
         }
