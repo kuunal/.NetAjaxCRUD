@@ -12,7 +12,7 @@ namespace Greeting.Services
         Task<ServiceResponse<EmployeesDTO>> GetEmployee(int id);
         Task<ServiceResponse<EmployeesDTO>> AddEmployee(EmployeesDTO employee);
         Task<ServiceResponse<EmployeesDTO>> RemoveEmployee(int id);
-        Task<ServiceResponse<EmployeesDTO>> UpdateEmployee(EmployeesDTO employee);
+        Task<ServiceResponse<EmployeesDTO>> UpdateEmployee(int id, EmployeesDTO employee);
 
 
     }

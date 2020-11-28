@@ -46,6 +46,22 @@ namespace Greeting.Services
             return response;
         }
 
-       
+        public async Task ForgotPassword(Employee employee)
+        {
+            string jwt = _tokenManager.Encode(employee);
+            string url = "http://localhost:5500/reset.html?"+jwt;
+            Message message = new Message(new string[] { employee.Email },
+                    "Password Reset Email",
+                    $"<h6>Click on the link to reset password<h6><a href='{url}'>{jwt}</a>");
+            await _emailSender.SendEmail(message);
+        }
+
+        public async Task<int> ResetPassword(string password, string token)
+        {
+            ClaimsPrincipal claims = _tokenManager.Decode(token);
+            var claim =  claims.Claims.ToList();
+            //claim;
+            return (await _repository.ResetPassword(claim[0].Value, password));
+        }
     }
 }

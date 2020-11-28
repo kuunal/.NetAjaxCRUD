@@ -50,9 +50,11 @@ namespace Greeting.Services
             return serviceResponse; 
         }
 
-        public async Task<ServiceResponse<EmployeesDTO>> UpdateEmployee(EmployeesDTO employee)
+        public async Task<ServiceResponse<EmployeesDTO>> UpdateEmployee(int id, EmployeesDTO updatedData)
         {
-            throw new NotImplementedException();
+            ServiceResponse<EmployeesDTO> response = new ServiceResponse<EmployeesDTO>();
+            response.Data = _mapper.Map<EmployeesDTO>(await _repo.Update(id, _mapper.Map<Employee>(updatedData)));
+            return response;
         }
     }
 }
