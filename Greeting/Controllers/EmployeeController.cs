@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Greeting.DTOs.EmployeeDTO;
 using Greeting.Models;
 using Greeting.Services;
+using Greeting.TokenAuthentication;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Greeting.Controllers
@@ -20,13 +22,16 @@ namespace Greeting.Controllers
             this._empService = empService;
         }
 
-        public async Task<IActionResult> GetAsync()
+        [HttpGet]
+        [TokenAuthenticationFilter]
+        public async Task<IActionResult> GetEmployeeAsync()
         {
             return Ok(await _empService.GetEmployees());
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> DetailAsync(int id)
+        [TokenAuthenticationFilter]
+        public async Task<IActionResult> DetailEmployeeAsync(int id)
         {
             return Ok(await _empService.GetEmployee(id));
         }
@@ -38,11 +43,18 @@ namespace Greeting.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        [TokenAuthenticationFilter]
+        public async Task<IActionResult> DeleteEmployeeAsync(int id)
         {
             return Ok(await _empService.RemoveEmployee(id));
         }
 
+        [HttpPut("{id}")]
+        [TokenAuthenticationFilter]
+        public async Task<IActionResult> EditEmployeeAsync(int id, [FromForm] EmployeesDTO updatedEmployee)
+        {
+            return Ok(await _empService.UpdateEmployee(id, updatedEmployee));
+        }
 
     }
 }

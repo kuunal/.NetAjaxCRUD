@@ -31,6 +31,26 @@ namespace Greeting.Controllers
             return BadRequest(new { message = "Email Already exist!" });
         }
 
-       
+        [HttpPost("{email}")]
+        [Route("/forgot")]
+        public async Task<IActionResult> ForgotPassword([FromForm] string email)
+        {
+            Employee employee = (await _service.SearchByEmail(email)).Data;
+            if (employee != null)
+            {
+                await _service.ForgotPassword(employee);
+                return Ok(new { message = "Mail sent for resetting password" });
+            }
+            return BadRequest(new { error = "Email doenst exists" });
+        }
+
+        [HttpPost("{password, token}")]
+        [Route("/Reset")]
+        public async Task<IActionResult> Reset([FromForm] string password, [FromForm] string token)
+        {
+            if (await _service.ResetPassword(password, token) == 1)
+                return Ok();
+            return BadRequest();
+        }
     }
 }
