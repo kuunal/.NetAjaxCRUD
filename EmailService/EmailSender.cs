@@ -29,7 +29,7 @@ namespace EmailService
                 try
                 {
                     await client.ConnectAsync(_config.SmtpServer, _config.Port, true);
-                    await client.AuthenticateAsync(_config.UserName, _config.Password);
+                    await client.AuthenticateAsync(_config.UserName, Environment.GetEnvironmentVariable("Password", EnvironmentVariableTarget.User));
                     client.AuthenticationMechanisms.Remove("X0AUTH2");
                     await client.SendAsync(email);
                 }
