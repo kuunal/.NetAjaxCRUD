@@ -39,6 +39,13 @@ namespace Greeting.Services
             return response;
         }
 
+        public async Task<ServiceResponse<Employee>> SearchByEmail(string email)
+        {
+            ServiceResponse<Employee> response = new ServiceResponse<Employee>();
+            response.Data = await _repository.GetByEmail(email);
+            return response;
+        }
+
        
     }
 }
