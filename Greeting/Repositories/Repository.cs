@@ -25,7 +25,8 @@ namespace Greeting.Repositories
 
         public async Task Add(Employee employeeData)
         {
-            SqlCommand command = new SqlCommand("insert into EmployeeTable(name, password, address, email, phoneno) values(@name, @password, @address, @email, @phoneno)");
+            SqlCommand command = new SqlCommand("insert into EmployeeTable(name, password, address, email, phoneno) " +
+                "values(@name, @password, @address, @email, @phoneno)");
             command.Parameters.AddWithValue("@name", employeeData.Name);
             command.Parameters.AddWithValue("@password", employeeData.Password);
             command.Parameters.AddWithValue("@address", employeeData.Address);
@@ -33,7 +34,7 @@ namespace Greeting.Repositories
             command.Parameters.AddWithValue("@phoneno", employeeData.PhoneNumber);
             await _conn.OpenAsync();
             command.Connection = _conn;
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
             _conn.Close();
         }
 
@@ -98,9 +99,18 @@ namespace Greeting.Repositories
             _conn.Close();
         }
 
-        public Task<Employee> Update(int id)
+        public async Task<Employee> Update(int id, Employee employeeData)
         {
-            throw new NotImplementedException();
+            SqlCommand command = new SqlCommand("update EmployeeTable set name=@name, address=@address, phoneno=@phoneno where id = @id");
+            command.Parameters.AddWithValue("@name", employeeData.Name);
+            command.Parameters.AddWithValue("@address", employeeData.Address);
+            command.Parameters.AddWithValue("@phoneno", employeeData.PhoneNumber);
+            command.Parameters.AddWithValue("@id", id);
+            await _conn.OpenAsync();
+            command.Connection = _conn;
+            await command.ExecuteNonQueryAsync();
+            _conn.Close();
+            return await GetAsync(id);
         }
     }
 }

@@ -14,6 +14,6 @@ namespace Greeting.Repositories
         Task Add(T employeeData);
 
         Task Remove(int id);
-        Task<T> Update(int id);
+        Task<T> Update(int id, T employeeData);
     }
 }
