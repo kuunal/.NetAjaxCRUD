@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Greeting.Services
 {
     public interface ILoginService<T>
-    {
+    {   
         Task<ServiceResponse<Employee>> AuthenticateEmployee(T user);
         Task<ServiceResponse<Employee>> SearchByEmail(string email);
 
