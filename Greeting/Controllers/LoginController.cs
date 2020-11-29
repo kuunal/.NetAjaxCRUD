@@ -23,12 +23,9 @@ namespace Greeting.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AuthenticateUser(LoginDTO user)
+        public async Task<IActionResult> AuthenticateUser([FromForm] LoginDTO user)
         {
-            Employee employee = (await _service.SearchByEmail(user.Email)).Data;
-            if (employee != null)
-                return Ok(await _service.AuthenticateEmployee(user));
-            return BadRequest(new { message = "Email Already exist!" });
+            return Ok(await _service.AuthenticateEmployee(user));
         }
 
         [HttpPost("{email}")]
