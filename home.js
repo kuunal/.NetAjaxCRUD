@@ -1,29 +1,47 @@
+var token = localStorage.getItem("token");
 var dataArray =[];
 var id = null;
 var editbtn = null;
+
+function redirect(err){
+    if(err.status >= 400 && err.status < 500)
+        window.location = "/login.html"
+        localStorage.clear();
+}
+
 function getEmployeeList(){
-    $.get("http://localhost:5000/Employee").done(data=>{
-    dataArray  = data.data;
-    console.log(dataArray)
-    let output="";    
-    for(let record of dataArray){
-            output+=`<tr>
-                <td>${record.id}</td>
-                <td>${record.name}</td>
-                <td id="data__buttons">
-                    <button class="edit-btn" value=${record.id}> <img src="./images/create-24px.svg" alt="Edit"></button>
-                    <button class="delete-btn" value=${record.id}> <img src="./images/delete-24px.svg" alt="Delete"></button>
-                </td>
-                </tr>`;
+    $.ajax({
+        url:"http://localhost:5000/Employee", 
+    headers:{
+        "Authorization":token
+    },success: function(data){
+        dataArray  = data.data;
+        console.log(dataArray)
+        let output="";    
+        for(let record of dataArray){
+                output+=`<tr>
+                    <td>${record.id}</td>
+                    <td>${record.name}</td>
+                    <td id="data__buttons">
+                        <button class="edit-btn" value=${record.id}> <img src="./images/create-24px.svg" alt="Edit"></button>
+                        <button class="delete-btn" value=${record.id}> <img src="./images/delete-24px.svg" alt="Delete"></button>
+                    </td>
+                    </tr>`;
+                }
+                $(".data__list").html(output);
+                $("sub").text(`(${dataArray.length} employees)`);
+            },
+            error: function(err){
+                redirect(err)
             }
-            $(".data__list").html(output);
-            $("sub").text(`(${dataArray.length} employees)`);
-        }
-    ).fail(err=> console.log(err))
+    })
 }
 
 $(document).ready(function()
 {
+    console.log(token);
+    if (token == null)
+        window.location = "/login.html";
     getEmployeeList();
     $(document).on("click",".edit-btn",function  (e){
         e.preventDefault();
@@ -54,11 +72,14 @@ $(document).ready(function()
         $.ajax({
             url:"http://localhost:5000/employee/"+currentBtn.val(),
             method:"DELETE",
+            headers:{
+                "Authorization":token
+            },
             success:function(){
                 $(currentBtn).parent().parent().remove();
             },
             error:function(err){
-                alert("Something went wrong! Please try again later")
+                redirect(err)
             }
         })
     })
@@ -67,19 +88,25 @@ $(document).ready(function()
         e.preventDefault();
         let username = $('#username').val();
         let email = $('#email-id').val();
-        let password  = $('#password').val();
+        let address  = $('#address').val();
+        let phoneNumber = $('#phoneNumber').val();
         $.ajax({
             url:"http://localhost:5000/employee/"+id,
             method:"PUT",
             data:{
-                name : username ? username : getFilteredData("name"),
-                email : email ? email : getFilteredData("address"), 
-                password : password ? password : getFilteredData("phoneNumber"), 
+                Name : username,
+                Email : email, 
+                Address: address,
+                phoneNumber 
+            },headers:{
+                "Authorization":token
             },success: function(){
                 $('#saved-img').append("<img src='./images/check_circle-24px.svg' alt='edit successful'/>");
                 $('#save-btn').text("saved");
                 editbtn.parent().prev().text(username);
-            },error: err=>console.log(err)
+            },error: function(err){ 
+                redirect(err)
+            }
         })
     })
 
