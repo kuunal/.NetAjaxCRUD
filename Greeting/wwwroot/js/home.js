@@ -23,8 +23,8 @@ function getEmployeeList(){
                     <td>${record.id}</td>
                     <td>${record.name}</td>
                     <td id="data__buttons">
-                        <button class="edit-btn" value=${record.id}> <img src="./images/create-24px.svg" alt="Edit"></button>
-                        <button class="delete-btn" value=${record.id}> <img src="./images/delete-24px.svg" alt="Delete"></button>
+                        <button class="edit-btn" value=${record.id}> <img src="../images/create-24px.svg" alt="Edit"></button>
+                        <button class="delete-btn" value=${record.id}> <img src="../images/delete-24px.svg" alt="Delete"></button>
                     </td>
                     </tr>`;
                 }
