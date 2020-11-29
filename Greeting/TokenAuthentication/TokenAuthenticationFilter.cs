@@ -14,7 +14,7 @@ namespace Greeting.TokenAuthentication
 
             if (context.HttpContext.Request.Headers.ContainsKey("Authorization"))
             {
-                var token = context.HttpContext.Request.Headers.First(cookie=> cookie.Key == "Authorization").Value;
+                var token = context.HttpContext.Request.Headers.First(cookie => cookie.Key == "Authorization").Value;
                 try
                 {
                     var claimPrinciple = _tokenManager.Decode(token);
