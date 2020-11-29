@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EmailService;
+using Greeting.CustomException;
 using Greeting.DTOs.EmployeeDTO;
 using Greeting.Models;
 using Greeting.Repositories;
@@ -53,6 +54,7 @@ namespace Greeting
                 app.UseHsts();
             }
 
+            //app.ConfigureCustomExceptionMiddleware();
             //app.UseCors();
             app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()
