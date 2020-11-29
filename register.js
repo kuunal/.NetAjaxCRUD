@@ -1,3 +1,10 @@
+var token = localStorage.getItem("token");
+function checkLoggedIn(){
+    if(token){
+        window.location="/home.html";
+    }
+}
+
 function authenticate(e){
     e.preventDefault();
     console.log("Incisee")
@@ -27,7 +34,7 @@ function authenticate(e){
         url:"http://localhost:5000/Employee",
         data:employee,
         success: function(){
-            window.location="/login.html";
+            window.location="./login.html";
         },error: function(err){
             console.log(err);
         }
@@ -35,5 +42,6 @@ function authenticate(e){
 }
 
 $(document).ready(function(){
+    checkLoggedIn();
     $(document).on("click","#submit",authenticate)
 });
