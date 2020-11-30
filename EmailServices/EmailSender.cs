@@ -19,10 +19,10 @@ namespace EmailService
         public async Task SendEmail(Message message)
         {
             var email = CreateEmail(message);
-            Send(email);
+            await Send(email);
         }
 
-        private async void Send(MimeMessage email)
+        private async Task Send(MimeMessage email)
         {
             using (var client = new SmtpClient())
             {
