@@ -25,7 +25,9 @@ body {
 }
 
 .nav .nav__right {
-  display: none;
+    display: inline-flex;
+    justify-content: flex-end;
+    width: 30%;
 }
 
 .nav .nav__right-active {

@@ -5,13 +5,13 @@ var editbtn = null;
 
 function redirect(err){
     if(err.status >= 400 && err.status < 500)
-        window.location = "/login.html"
+        window.location = "/html/login.html"
         localStorage.clear();
 }
 
 function getEmployeeList(){
     $.ajax({
-        url:"http://localhost:5000/Employee", 
+        url:"/Employee", 
     headers:{
         "Authorization":token
     },success: function(data){
@@ -41,7 +41,7 @@ $(document).ready(function()
 {
     console.log(token);
     if (token == null)
-        window.location = "/login.html";
+        window.location = "/html/login.html";
     getEmployeeList();
     $(document).on("click",".edit-btn",function  (e){
         e.preventDefault();
@@ -70,7 +70,7 @@ $(document).ready(function()
         e.preventDefault();
         let currentBtn = $(this);
         $.ajax({
-            url:"http://localhost:5000/employee/"+currentBtn.val(),
+            url:"/Employee/"+currentBtn.val(),
             method:"DELETE",
             headers:{
                 "Authorization":token
@@ -91,7 +91,7 @@ $(document).ready(function()
         let address  = $('#address').val();
         let phoneNumber = $('#phoneNumber').val();
         $.ajax({
-            url:"http://localhost:5000/employee/"+id,
+            url:"/Employee/"+id,
             method:"PUT",
             data:{
                 Name : username,

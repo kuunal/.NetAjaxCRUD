@@ -1,7 +1,7 @@
 var token = localStorage.getItem("token");
 function checkLoggedIn(){
     if(token){
-        window.location="/home.html";
+        window.location="/html/index.html";
     }
 }
 $(document).ready(function(){
@@ -11,7 +11,7 @@ $(document).ready(function(){
     let email = $('#email-id').val();
     let password = $('#pass').val();
     $.ajax({
-        url:"http://localhost:5000/api/Login",
+        url:"/api/Login",
         method:"POST",
         data:{
             Email:email,
@@ -22,7 +22,7 @@ $(document).ready(function(){
             if (data.success == true){
                 console.log(data);
                 localStorage.setItem("token",data.message);
-                window.location="./home.html";  
+                window.location="./index.html";  
             }},
         error:function(err){
                 alert("Incorrect Id or Password!", err);

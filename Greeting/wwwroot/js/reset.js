@@ -5,13 +5,14 @@ $(document).ready(function(){
         let url = window.location.href;
         let token = url.split("?")[1];
         $.ajax({
-            url:"http://localhost:5000/Reset",
+            url:"/Reset",
             method:"POST",
             data:{
                 password,
                 token
             }, success: function(){
                 alert("Password changed successfully");
+                window.location = "./login.html";
             }, error: function(){
                 alert("Session expired!");
             }

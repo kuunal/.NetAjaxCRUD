@@ -5,7 +5,7 @@ $(document).ready(function(){
     e.preventDefault();
         let email = $('#email-id').val();
         $.ajax({
-            url:"http://localhost:5000/forgot",
+            url:"/forgot",
             method:"POST",
             data:{
                 Email : email

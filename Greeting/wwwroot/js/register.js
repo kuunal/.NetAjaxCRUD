@@ -1,7 +1,7 @@
 var token = localStorage.getItem("token");
 function checkLoggedIn(){
     if(token){
-        window.location="/home.html";
+        window.location="/html/index.html";
     }
 }
 
@@ -31,10 +31,10 @@ function authenticate(e){
     }
     $.ajax({
         method:"POST",
-        url:"http://localhost:5000/Employee",
+        url:"/Employee",
         data:employee,
         success: function(){
-            window.location="./login.html";
+            window.location="/html/login.html";
         },error: function(err){
             console.log(err);
         }
