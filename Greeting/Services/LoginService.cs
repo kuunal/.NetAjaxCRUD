@@ -46,10 +46,10 @@ namespace Greeting.Services
             return response;
         }
 
-        public async Task ForgotPassword(Employee employee)
+        public async Task ForgotPassword(Employee employee, string currentUrl)
         {
             string jwt = _tokenManager.Encode(employee);
-            string url = "http://localhost:5500/reset.html?"+jwt;
+            string url = "https://"+currentUrl+"/html/reset.html?"+jwt;
             Message message = new Message(new string[] { employee.Email },
                     "Password Reset Email",
                     $"<h6>Click on the link to reset password<h6><a href='{url}'>{jwt}</a>");

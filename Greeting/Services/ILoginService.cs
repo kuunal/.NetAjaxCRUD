@@ -11,7 +11,7 @@ namespace Greeting.Services
         Task<ServiceResponse<Employee>> AuthenticateEmployee(T user);
         Task<ServiceResponse<Employee>> SearchByEmail(string email);
 
-        Task ForgotPassword(Employee employee);
+        Task ForgotPassword(Employee employee, string currentUrl);
         Task<int> ResetPassword(string password, string token);
 
     }

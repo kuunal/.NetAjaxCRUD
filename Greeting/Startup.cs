@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 
 namespace Greeting
@@ -40,6 +41,9 @@ namespace Greeting
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddAutoMapper(typeof(Startup));
             services.AddCors();
+            services.AddSwaggerGen(options=> {
+                options.SwaggerDoc("v1", new Info { Title = "My API", Version="v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,9 +57,14 @@ namespace Greeting
             {
                 app.UseHsts();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(option=> {
+                option.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Version 1");
+            });
 
             //app.ConfigureCustomExceptionMiddleware();
             //app.UseCors();
+
             app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()
             );
