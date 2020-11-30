@@ -30,12 +30,14 @@ namespace Greeting.Controllers
 
         [HttpPost("{email}")]
         [Route("/forgot")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> ForgotPassword([FromForm] string email)
         {
             Employee employee = (await _service.SearchByEmail(email)).Data;
             if (employee != null)
             {
-                await _service.ForgotPassword(employee);
+                var currentUrl = HttpContext.Request.Host;
+                await _service.ForgotPassword(employee, currentUrl.Value);
                 return Ok(new { message = "Mail sent for resetting password" });
             }
             return BadRequest(new { error = "Email doenst exists" });
@@ -43,6 +45,7 @@ namespace Greeting.Controllers
 
         [HttpPost("{password, token}")]
         [Route("/Reset")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> Reset([FromForm] string password, [FromForm] string token)
         {
             if (await _service.ResetPassword(password, token) == 1)
