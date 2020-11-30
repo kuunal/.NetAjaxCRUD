@@ -22,6 +22,10 @@ function authenticate(e){
         alert("passwords don't match");
         return
     }
+    if (phoneNumber.length != 10) {
+        alert("Invalid phone no");
+        return
+    }
     let employee = {
         Name:name,
         Email:email,

@@ -3,7 +3,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   height: 100%;
-  background: gainsboro;
+  overflow:hidden;
 }
 
 .main {
@@ -49,8 +49,8 @@ h1 {
 
 .container {
   background-color: white;
-  width: 60%;
-  margin: 1% auto;
+  width: 100%;
+  margin: 0 auto;
   box-shadow: 0px 0px 5px 0.5px rgba(0, 0, 0, 0.2);
   padding: 2%;
 }
@@ -101,16 +101,25 @@ button {
   align-items: center;
 }
 
-.data__list tr td {
+.data__list tr {
   width: 100%;
-  /* width: 50%; */
-  text-align: center;
+  flex:1;
+  padding: 10px;
+}
+
+.tr__headers{
+    font-weight:bolder;
+    font-size: 3vh;
+}
+
+.data__list td {
+    width: 15%;
+    word-break:break-all;
 }
 
 .data__list tr:nth-child(2) {
   width: 100%;
   /* width: 50%; */
-  text-align: center;
 }
 
 .modal {
