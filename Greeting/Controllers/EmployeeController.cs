@@ -32,7 +32,7 @@ namespace Greeting.Controllers
                 {
                     return Ok(new ServiceResponse<Employee>(null, 200, "No data!"));
                 }
-                    return Ok(new ServiceResponse<List<Employee>>(employee , 200, "No data!"));
+                    return Ok(new ServiceResponse<List<Employee>>(employee , 200, "Successful!"));
             }catch(Exception e)
             {
                 return BadRequest(new ServiceResponse<Employee>(null, 500, e.Message));
