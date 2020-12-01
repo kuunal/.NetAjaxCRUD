@@ -18,7 +18,7 @@ namespace Greeting.TokenAuthentication
                 var token = context.HttpContext.Request.Headers.First(cookie => cookie.Key == "Authorization").Value;
                 try
                 {
-                    var claimPrinciple = _tokenManager.Decode(token);
+                    var claimPrinciple = _tokenManager.Decode(token.ToString().Split(" ")[1]);
                 }catch(Exception)
                 {
                     context.ModelState.AddModelError("Unauthorized", "Invalid token");
