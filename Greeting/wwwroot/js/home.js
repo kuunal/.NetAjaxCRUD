@@ -14,7 +14,7 @@ function getEmployeeList(){
     $.ajax({
         url:"/Employee", 
     headers:{
-        "Authorization":"Bearer" + token
+        "Authorization":"Bearer " + token
     },success: function(data){
         dataArray  = data.data;
         console.log(dataArray)
@@ -85,7 +85,7 @@ $(document).ready(function()
             url:"/Employee/"+currentBtn.val(),
             method:"DELETE",
             headers:{
-                "Authorization":"Bearer" + token
+                "Authorization":"Bearer " + token
             },
             success:function(){
                 $(currentBtn).parent().parent().remove();
@@ -113,7 +113,7 @@ $(document).ready(function()
                 Address: address,
                 phoneNumber
             }, headers: {
-                "Authorization": "Bearer" + token
+                "Authorization": "Bearer " + token
             }, success: function () {
                 $('#saved-img').append("<img src='./images/check_circle-24px.svg' alt='edit successful'/>");
                 $('#save-btn').text("saved");
