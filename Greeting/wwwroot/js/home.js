@@ -72,7 +72,7 @@ $(document).ready(function()
     $(document).on("click","#close",function(e){
         e.preventDefault();
         $(".modal").removeClass("active");
-        $(".container").css("background","rgba(255,255,255,1)");
+        $(".container .main").css("background","rgba(255,255,255,1)");
         $(".main").css("background","gainsboro");
         $(".nav").css("pointer-events","auto"); 
         id = null;

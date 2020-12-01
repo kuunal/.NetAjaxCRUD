@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ModelLayer;
+﻿using ModelLayer;
 using RepositoryLayer;
 using System;
 using System.Collections.Generic;
@@ -11,11 +10,9 @@ namespace BusinessLayer
 {
     public class EmployeeServices : IService
     {
-        IMapper _mapper;
         IRepository<Employee> _repo;
-        public EmployeeServices(IMapper mapper, IRepository<Employee> repo)
+        public EmployeeServices(IRepository<Employee> repo)
         { 
-            _mapper = mapper;
             _repo = repo;
         }
         public async Task<Employee> AddEmployee(Employee employee)
