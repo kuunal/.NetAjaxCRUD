@@ -55,7 +55,7 @@ $(document).ready(function(){
                     displayError('Invalid Id or password');
                 }
                 else if (err.status >= 500)
-                    $('.error').text('Server is down! ');
+                    displayError('Server is down! ');
             }
         })
     })
