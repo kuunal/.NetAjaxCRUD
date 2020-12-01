@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer;
 using EmailService;
-using Greeting.CustomException;
 using Greeting.TokenAuthentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
