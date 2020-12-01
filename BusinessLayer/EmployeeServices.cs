@@ -18,6 +18,7 @@ namespace BusinessLayer
         public async Task<Employee> AddEmployee(Employee employee)
         {
             try { 
+                employee.Password = BCrypt.Net.BCrypt.HashPassword(employee.Password);
                 return await _repo.Add(employee);
             }catch(Exception e)
             {
