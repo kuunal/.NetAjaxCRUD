@@ -5,6 +5,16 @@ function checkLoggedIn(){
     }
 }
 
+function displayError(error) {
+    $('.error').addClass("error-active");
+    setTimeout(function () {
+        $('.error').text(error);
+    }, 250);
+    setTimeout(function () {
+        $('.error').removeClass("error-active").text('');
+    }, 5000);
+}
+
 function authenticate(e){
     e.preventDefault();
     console.log("Incisee")
@@ -12,18 +22,21 @@ function authenticate(e){
     let email = $('#email-id').val()
     let password = $('#pass') .val()
     let address = $('#address') .val()
-    let phoneNumber = $('#pno') .val()
-    console.log(name, email, password, (phoneNumber), address)
+    let phoneNumber = $('#pno').val()
+    if (!email.match("^[a-zA-Z0-9]+[\\.\\-\\+\\_]?[a-zA-Z0-9]+@[a-zA-Z0-9]+[.]?[a-zA-Z]{2,4}[\\.]?([a-z]{2,4})?$")) {
+        displayError("INVALID EMAIL FORMAT");
+        return
+    }
     if (!password.match("^(?=.*[0-9])(?=.*[A-Z])(?=[a-zA-Z0-9]*[^a-zA-Z0-9][a-zA-Z0-9]*$).{8,}")){
-        alert("Invalid format")
+        displayError("PASSWORD SHOULD CONTAIN ATLEAST ONE LOWER, UPPER, SPECIAL AND DIGIT!")
         return
     }
     if(password !=$('#confirm-pass').val()){
-        alert("passwords don't match");
+        displayError("PASSWORD'S DON'T MATCH");
         return
     }
     if (phoneNumber.length != 10) {
-        alert("Invalid phone no");
+        displayError("INVALID PHONE NUMBER");
         return
     }
     let employee = {
