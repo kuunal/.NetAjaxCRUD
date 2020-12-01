@@ -26,13 +26,16 @@ namespace BusinessLayer
         {
             try
             {
-                Employee employee = await _repository.Login(user);
-                if (employee != null)
+                Employee employee = await _repository.GetByEmail(user.Email);
+                if (employee == null || !BCrypt.Net.BCrypt.Verify(user.Password, employee.Password.Trim()))
+                {
+                    return (null, null);
+                }
+                else
                 {
                     string token = _tokenManager.Encode(employee);
                     return (employee, token);
                 }
-                return (null, null);
             }catch(Exception e)
             {
                 throw new Exception(e.Message); 
