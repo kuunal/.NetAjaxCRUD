@@ -1,18 +1,19 @@
 ﻿using AutoMapper;
+using BusinessLayer;
 using EmailService;
 using Greeting.CustomException;
-using Greeting.DTOs.EmployeeDTO;
-using Greeting.Models;
-using Greeting.Repositories;
-using Greeting.Services;
 using Greeting.TokenAuthentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModelLayer;
+using RepositoryLayer;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Data.SqlClient;
+using TokenAuthentication;
 
 namespace Greeting
 {
@@ -29,16 +30,23 @@ namespace Greeting
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var emailConfig = Configuration
+            EmailConfiguration emailConfig = Configuration
                 .GetSection("EmailConfiguration")
                 .Get<EmailConfiguration>();
+
+            BaseRepository connectionString = Configuration
+                .GetSection("ConnectionStrings")
+                .Get<BaseRepository>();
+
+            //services.Configure<BaseRepository>(Configuration.GetSection("myConfiguration"));
             services.AddSingleton(emailConfig);
+            services.AddSingleton(connectionString);
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IService, EmployeeServices>();
             services.AddScoped<ILoginRepository<LoginDTO>, LoginRepository>();
-            services.AddScoped<ILoginService<LoginDTO>, LoginService>();
+            services.AddScoped<ILoginService<LoginDTO>, LoginService>();    
             services.AddScoped<IRepository<Employee>, Repository>();
-            services.AddTransient<ITokenManager, TokenManager>();
+            services.AddSingleton<ITokenManager, TokenManager>();
             services.AddAutoMapper(typeof(Startup));
             services.AddCors();
             services.AddSwaggerGen(options=> {
