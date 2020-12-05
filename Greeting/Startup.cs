@@ -38,7 +38,6 @@ namespace Greeting
                 .GetSection("ConnectionStrings")
                 .Get<BaseRepository>();
 
-            //services.Configure<BaseRepository>(Configuration.GetSection("myConfiguration"));
             services.AddSingleton(emailConfig);
             services.AddSingleton(connectionString);
             services.AddScoped<IEmailSender, EmailSender>();
@@ -94,14 +93,11 @@ namespace Greeting
                 option.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Version 1");
             });
 
-            //app.ConfigureCustomExceptionMiddleware();
-            //app.UseCors();
 
             app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()
             );
             app.UseStaticFiles();
-            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
