@@ -10,7 +10,7 @@ function displayError(error) {
 
 $(document).ready(function () {
     $(document).on("click","#forgot-btn",function(e){
-        e.preventDefault
+        e.preventDefault()
         let email = $('#email-id').val();
         if (!email.match("^[a-zA-Z0-9]+[\\.\\-\\+\\_]?[a-zA-Z0-9]+@[a-zA-Z0-9]+[.]?[a-zA-Z]{2,4}[\\.]?([a-z]{2,4})?$")) {
             displayError("INVALID EMAIL FORMAT");
@@ -24,8 +24,9 @@ $(document).ready(function () {
             }, success: function(){
                 displayError('Mail has been sent');
             }, error: function (err) {
+                console.log("sadasda", err.status);
                 if (err.status == 400) {
-                    displayError('Invalid Id or password');
+                    displayError('No such ID');
                 }
                 else if (err.status >= 500)
                     $('.error').text('Server is down! ');
