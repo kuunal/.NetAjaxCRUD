@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using BusinessLayer;
 using EmailService;
+using Greeting.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer;
@@ -24,16 +26,17 @@ namespace Greeting.Controllers
         [HttpPost]
         public async Task<IActionResult> AuthenticateUser([FromForm] LoginDTO user)
         {
-            try { 
+            try {
                 var (userData, token) = await _service.AuthenticateEmployee(user);
                 if (userData == null || token == null)
                 {
-                    return BadRequest(new ServiceResponse<Employee>(null, 400, "Invalid id or password"));
+                    return BadRequest(new Response<Employee>(null, (int)HttpStatusCode.BadRequest, ResponseMessages.INVALID_CREDENTIALS));
                 }
-                return Ok(new ServiceResponse<Employee>(userData, 200, token));
-            }catch(Exception e)
+                return Ok(new Response<Employee>(userData, (int)HttpStatusCode.OK, token));
+            }
+            catch (Exception e)
             {
-                return BadRequest(new ServiceResponse<Employee>(null, 400, e.Message));
+                return BadRequest(new Response<Employee>(null, (int)HttpStatusCode.InternalServerError, e.Message));
             }
 
         }
@@ -43,14 +46,21 @@ namespace Greeting.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> ForgotPassword([FromForm] string email)
         {
-            Employee employee = await _service.SearchByEmail(email);
-            if (employee != null)
+            try
             {
-                var currentUrl = HttpContext.Request.Host;
-                await _service.ForgotPassword(employee, currentUrl.Value);
-                return Ok(new { message = "Mail sent for resetting password" , status=200});
+                Employee employee = await _service.SearchByEmail(email);
+                if (employee != null)
+                {
+                    var currentUrl = HttpContext.Request.Host;
+                    await _service.ForgotPassword(employee, currentUrl.Value);
+                    return Ok(new Response<Employee>(null, (int)HttpStatusCode.OK, ResponseMessages.MAIL_SENT));
+                }
+                return BadRequest(new Response<Employee>(null, (int)HttpStatusCode.BadRequest, ResponseMessages.NO_SUCH_USER));
             }
-            return BadRequest(new { error = "Email doenst exists", status = 400 });
+            catch (Exception e)
+            {
+                return Json(new Response<Employee>(null, (int)HttpStatusCode.InternalServerError, e.Message));
+            }
         }
 
         [HttpPost("{password, token}")]
@@ -58,9 +68,16 @@ namespace Greeting.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> Reset([FromForm] string password, [FromForm] string token)
         {
-            if (await _service.ResetPassword(password, token) == 1)
-                return Ok(new { status = 200, message = "Password Reset successfull!"});
-            return BadRequest(new { status = 400, message = "Password Reset Failed!" });
+            try
+            {
+                if (await _service.ResetPassword(password, token) == 1)
+                    return Ok(new Response<Employee>(null, (int)HttpStatusCode.OK, ResponseMessages.PASSWORD_CHANGED));
+                return BadRequest(new Response<Employee>(null, (int)HttpStatusCode.OK, ResponseMessages.FAILED));
+            }
+            catch (Exception e)
+            {
+                return Json(new Response<Employee>(null, (int)HttpStatusCode.InternalServerError, e.Message));
+            }
         }
     }
 }
