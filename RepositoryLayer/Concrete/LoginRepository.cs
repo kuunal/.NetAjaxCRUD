@@ -8,7 +8,6 @@ namespace RepositoryLayer
     public class LoginRepository : ILoginRepository<LoginDTO>
     {
         private SqlConnection _conn;
-
         public LoginRepository(BaseRepository baseRepository)
         {
             _conn = baseRepository.GetConnection();
@@ -20,8 +19,9 @@ namespace RepositoryLayer
             using (_conn)
             {
                 await _conn.OpenAsync();
-                SqlCommand command = new SqlCommand("Select id, name, address, email, password, phoneno from EmployeeTable where email=@email", _conn);
-                command.Parameters.AddWithValue("@email", email);
+                SqlCommand command = new SqlCommand("spEmployeeTable_GetByEmail", _conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@emailInput", email);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (await reader.ReadAsync())
@@ -29,11 +29,11 @@ namespace RepositoryLayer
                         employee = new Employee
                         {
                             Id = Convert.ToInt32(reader["id"]),
-                            Name = reader.GetString(1),
-                            Email = reader.GetString(3),
-                            Password = reader.GetString(4),
-                            Address = reader.GetString(2),
-                            PhoneNumber = reader.GetInt32(5),
+                            Name = (string)reader["name"],
+                            Email = (string)reader["email"],
+                            Password = (string)reader["password"],
+                            Address = (string)reader["address"],
+                            PhoneNumber = (long)reader["phoneno"]
                         };
                     }
                 }
@@ -42,34 +42,6 @@ namespace RepositoryLayer
             return employee;
         }
 
-        public async Task<Employee> Login(LoginDTO user)
-        {
-            Employee employee = null;
-            using (_conn)
-            {
-                await _conn.OpenAsync();
-                SqlCommand command = new SqlCommand("Select id, name, address, email, password, phoneno from EmployeeTable where email=@email and password=@password", _conn);
-                command.Parameters.AddWithValue("@email", user.Email);
-                command.Parameters.AddWithValue("@password", user.Password);
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (await reader.ReadAsync())
-                    {
-                        employee = new Employee
-                        {
-                            Id = Convert.ToInt32(reader["id"]),
-                            Name = reader.GetString(1),
-                            Email = reader.GetString(3),
-                            Password = reader.GetString(4),
-                            Address = reader.GetString(2),
-                            PhoneNumber = reader.GetInt32(5),
-                        };
-                    }
-                }
-                _conn.Close();
-            }
-            return employee;
-        }
 
         public async Task<int> ResetPassword(string email, string password)
         {

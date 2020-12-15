@@ -19,16 +19,21 @@ namespace RepositoryLayer
 
         public async Task<Employee> Add(Employee employeeData)
         {
-            SqlCommand command = new SqlCommand("insert into EmployeeTable(name, password, address, email, phoneno) " +
-                "values(@name, @password, @address, @email, @phoneno)");
+            SqlCommand command = new SqlCommand("spEmployeeTable_Create");
             command.Parameters.AddWithValue("@name", employeeData.Name);
             command.Parameters.AddWithValue("@password", employeeData.Password);
             command.Parameters.AddWithValue("@address", employeeData.Address);
             command.Parameters.AddWithValue("@email", employeeData.Email);
             command.Parameters.AddWithValue("@phoneno", employeeData.PhoneNumber);
+            SqlParameter sqlParameter = new SqlParameter();
+            sqlParameter.ParameterName = "@id";
+            sqlParameter.SqlDbType = System.Data.SqlDbType.Int;
+            sqlParameter.Direction = System.Data.ParameterDirection.Output;
+            command.Parameters.Add(sqlParameter);
             await _conn.OpenAsync();
             command.Connection = _conn;
-            await command.ExecuteNonQueryAsync();
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            employeeData.Id =  (int) await command.ExecuteScalarAsync();
             _conn.Close();
             return employeeData;
         }
@@ -38,18 +43,13 @@ namespace RepositoryLayer
             List<Employee> employees = new List<Employee>();
             using (_conn) {
                 await _conn.OpenAsync();
-                SqlCommand command = new SqlCommand("Select id, name, address, email, password, phoneno from EmployeeTable", _conn);
-                using(SqlDataReader reader = command.ExecuteReader())
+                SqlCommand command = new SqlCommand("spEmployees_GetEmployees", _conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (await reader.ReadAsync())
                     {
-                        employees.Add(new Employee { Id = Convert.ToInt32(reader["id"]), 
-                            Name = reader.GetString(1),
-                            Email = reader.GetString(3),
-                            Password = reader.GetString(4),
-                            Address = reader.GetString(2),
-                            PhoneNumber = reader.GetInt32(5),
-                        });
+                        employees.Add(GetDataFromReader(reader));
                     }
                 }
                 _conn.Close();
@@ -63,21 +63,14 @@ namespace RepositoryLayer
             using (_conn)
             {
                 await _conn.OpenAsync();
-                SqlCommand command = new SqlCommand("Select id, name, address, email, password, phoneno from EmployeeTable where id = @id", _conn);
-                command.Parameters.AddWithValue("@id", id);
+                SqlCommand command = new SqlCommand("spEmployeeTable_GetById", _conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@idInput", id);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (await reader.ReadAsync())
                     {
-                        employee = new Employee
-                        {
-                            Id = Convert.ToInt32(reader["id"]),
-                            Name = reader.GetString(1),
-                            Email = reader.GetString(3),
-                            Password = reader.GetString(4),
-                            Address = reader.GetString(2),
-                            PhoneNumber = reader.GetInt32(5),
-                        };
+                        employee = GetDataFromReader(reader);
                     }
                 }
                 _conn.Close();
@@ -88,25 +81,49 @@ namespace RepositoryLayer
         public async Task<int> Remove(int id)
         {
             await _conn.OpenAsync();
-            SqlCommand command = new SqlCommand("Delete from EmployeeTable where id = @id", _conn);
-            command.Parameters.AddWithValue("@id", id);
-            int result = await command.ExecuteNonQueryAsync();
+            SqlCommand command = new SqlCommand("spEmployeeTable_Remove", _conn);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@idInput", id);
+            int result = await command.ExecuteNonQueryAsync(); 
             _conn.Close();
             return result;
         }
 
         public async Task<Employee> Update(int id, Employee employeeData)
         {
-            SqlCommand command = new SqlCommand("update EmployeeTable set name=@name, address=@address, phoneno=@phoneno where id = @id");
+            SqlCommand command = new SqlCommand("spUpdateEmployee");
+            Employee employee = null;
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@name", employeeData.Name);
             command.Parameters.AddWithValue("@address", employeeData.Address);
             command.Parameters.AddWithValue("@phoneno", employeeData.PhoneNumber);
             command.Parameters.AddWithValue("@id", id);
             await _conn.OpenAsync();
             command.Connection = _conn;
-            await command.ExecuteNonQueryAsync();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (await reader.ReadAsync())
+                {
+                    employee = GetDataFromReader(reader);
+                }
+            }
             _conn.Close();
             return await GetAsync(id);
+        }
+
+        public Employee GetDataFromReader(SqlDataReader reader)
+        {
+           
+            return new Employee
+            {
+                Id = Convert.ToInt32(reader["id"]),
+                Name = (string)reader["name"],
+                Email = (string)reader["email"],
+                Password = (string)reader["password"],
+                Address = (string)reader["address"],
+                PhoneNumber = (long)reader["phoneno"]
+            };
+
         }
     }
 }
